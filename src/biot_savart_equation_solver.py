@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from scipy.constants import mu_0, pi
 
 from src.coordinate_and_position import CoordinateSystem
@@ -39,17 +40,33 @@ class BiotSavartEquationSolver:
             B_x = B_y = 0 is always True in our 2D world.
         """
 
-        points = []
-        valeur = []
-        
-        #on itère sur tous les points de l'espace pour trouver les points où le courant est non-nul
-        for x in np.arange(0, 101, delta_x):
-            for y in np.arange(0, 101, delta_y):
-                #on ajoute les points où le courant est non_nul à la liste points
-                #on ajoute la valeur du coursnt correspondant à liste valeur
-                if electric_current(x,y)[0] != 0 or electric_current(x,y)[1] !=0:
-                    points.append((x,y))
-                    valeur.append(electric_current(x,y))
+        #on détermine les dimensions du electric_current à parcourir
+        x, y, z = electric_current.shape
+        #on initialise un champ magnétique total nul de même dimension que le electric_current
+        champ_total = np.zeros(x, y, z)
+        #on parcourt tous les points en x avec un pas de delta_x
+        for i in range(0, x, delta_x):
+            #on parcourt tous les points en y avec un pas de delta_y
+            for j in range(0, y, delta_y):
+                #on vérifie si au moins une composante du courant n'est pas nul
+                if electric_current[i,j][0] != 0 or electric_current[i,j][1] != 0 or electric_current[i,j][2] != 0:
+                    #si c'est le cas, calcule la contribution au champ du point (i,j) pour tous les points de l'espace
+                    for k in range(0, x, delta_x):
+                        for l in range(0, y, delta_y):
+                            #on veut juste calculer le champ pour les points de l'espace où il n'y a pas d'élément de courant
+                            if electric_current[k,l][0] == 0 or electric_current[k,l][1] == 0 or electric_current[k,l][2] == 0:
+                                #on cherche la distance entre l'élement de courant(i,j) et le point où on cherche le champ(k,l)
+                                rx = i-k
+                                ry = j-l
+                                norme_r = math.sqrt() 
+
+
+
+
+                
+
+
+
 
         
 
