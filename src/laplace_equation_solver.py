@@ -51,16 +51,31 @@ class LaplaceEquationSolver:
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
 
-        liste_voltage_pas_zéro = []
+        liste_voltage_pas_zero = []
 
 #Trouver les valeurs fixes
         for num_rangee, rangee in enumerate(constant_voltage):
             for num_colone, voltage in enumerate(rangee):
                 if voltage != 0:
-                    liste_voltage_pas_zéro.append(num_colone, num_rangee, voltage)
+                    liste_voltage_pas_zero.append(num_colone, num_rangee, voltage)
 
+#matrice de voltage
+        array_horizontale_vide = np.zeros((1, num_colone+1))
+        array_verticale_vide = np.zeros((1, num_rangee+1)).T
+
+        for i in range(0, self):
+            D_Nord = np.concatenate((constant_voltage[:, 1:], array_horizontale_vide), axis=0)
+            D_Sud = np.concatenate((array_horizontale_vide, constant_voltage[:-1, :]), axis=0)
+            D_Est = np.concatenate((array_verticale_vide, constant_voltage[:, :-1]), axis=1)
+            D_Ouest = np.concatenate((constant_voltage[:, 1:], array_verticale_vide), axis=1)
         
+            constant_voltage = (D_Nord + D_Sud + D_Est + D_Ouest)/4
 
+            for value in liste_voltage_pas_zero:
+                constant_voltage[value[1], value[0]=value[2]]
+
+        return ScalarField(constant_voltage)
+        
         raise NotImplementedError
 
     def _solve_in_polar_coordinate(
