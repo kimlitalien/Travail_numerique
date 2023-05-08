@@ -51,6 +51,15 @@ class LaplaceEquationSolver:
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
 
+        liste_voltage_pas_zéro = []
+
+#Trouver les valeurs fixes
+        for num_rangee, rangee in enumerate(constant_voltage):
+            for num_colone, voltage in enumerate(rangee):
+                if voltage != 0:
+                    liste_voltage_pas_zéro.append(num_colone, num_rangee, voltage)
+
+        
 
         raise NotImplementedError
 
