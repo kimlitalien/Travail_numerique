@@ -2,7 +2,9 @@ import env_examples  # Modifies path, DO NOT REMOVE
 
 from sympy import Symbol
 
-from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
+from src import Circuit, CoordinateSystem, VoltageSource, Wire, World, biot_savart_equation_solver
+
+
 
 
 if __name__ == "__main__":
@@ -39,7 +41,38 @@ if __name__ == "__main__":
     world.show_circuit(
         {0: (26, 60), 1: (26, 74), 2: (74, 74), 3: (74, 60), 4: (74, 40), 5: (74, 26), 6: (26, 26), 7: (26, 40)}
     )
-    world.compute()
-    world.show_all()
+    #world.compute()
+    #world.show_all()
 
-    'test allo'
+#Test Biot-Savart en cartésien    
+
+#on crée un objet de la class BioSavartEquationSolver
+solver = biot_savart_equation_solver.BiotSavartEquationSolver()
+import numpy as np
+from src.fields import VectorField
+
+# Dimensions du carré de courant
+width = 1000
+height = 1000
+
+# Intensité du courant
+current_intensity = 1.0  # Intensité du courant
+
+# Création du VectorField initialisé avec des zéros
+electric_current = VectorField(np.zeros((width, height, 3)))
+
+# Ajout des fils du carré de courant
+# Fil 1 (haut)
+electric_current[0:width, 0, :] = np.array([current_intensity, 0, 0])
+# Fil 2 (bas)
+electric_current[0:width, height-1, :] = np.array([-current_intensity, 0, 0])
+# Fil 3 (gauche)
+electric_current[0, 0:height, :] = np.array([0, current_intensity, 0])
+# Fil 4 (droite)
+electric_current[width-1, 0:height, :] = np.array([0, -current_intensity, 0])
+
+
+#on calcule le champ magnétique
+champ_magnétique = solver._solve_in_cartesian_coordinate(electric_current,1,1)
+
+champ_magnétique.show()
