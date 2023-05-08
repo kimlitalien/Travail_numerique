@@ -88,12 +88,13 @@ class LaplaceEquationSolver:
             for rayon, val in enumerate(ligne):
                 if val != 0:
                     composants_liste.append((rayon, angle, val))
-        #initialise matrice de dépendance avec matrice de tension des composants
+        #initialise matrice de dépendance avec matrice de tension constante des composants
         matrice_dependance = constant_voltage
         #on itère
         for i in range(self.nb_iterations):
-            #on crée les matrices pour calculer le champ de potentiel électrique en chaque point (r,theta) de l'espace
+            #on crée des sous-matrices matrices pour calculer le champ de potentiel électrique en chaque point (r,theta) de l'espace
             #Les différentes matrices représentent les potentiels électriques en chaque point voisin d'un point donné (r, theta) dans les 4 direction: nord, sud, est et ouest 
+            #Utilisées pour approximer les dérivées partielles du potentiel électrique en chaque point de l'espace, ce qui permet ensuite de résoudre l'équation de Laplace pour trouver le champ de potentiel électrique.
             V_nord = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_nord[0:-2, 1:-1]=matrice_dependance
             V_sud = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
@@ -102,11 +103,13 @@ class LaplaceEquationSolver:
             V_ouest[1:-1, 0:-2]=matrice_dependance
             V_est = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
             V_est[1:-1, 2:]=matrice_dependance
-            #Utilisées pour approximer les dérivées partielles du potentiel électrique en chaque point de l'espace, ce qui permet ensuite de résoudre l'équation de Laplace pour trouver le champ de potentiel électrique.
+            
+            # calcule la nouvelle matrice des potentiels, calculée à partir de la matrice de tension constante constant_voltage, ainsi que de des quatre sous-matrices matrices supplémentaires
             matrice_dependance=((1/delta_r**2+1/delta_theta**2)**(-1) * 0.5 * ((V_sud+V_nord)/delta_r**2+(V_est+V_ouest)/delta_theta**2))[1:-1, 1:-1]
+            #parcourt la liste composants_liste et met à jour les potentiels de tous les points correspondant à des composants du circuit électrique, en utilisant les valeurs de tension constante
             for k in composants_liste:
                 matrice_dependance[k[1], k[0]] = k[2]
-
+            # retourne la matrice de potentiel mise à jour sous la forme d'un objet    
             return ScalarField(matrice_dependance)
 
 
