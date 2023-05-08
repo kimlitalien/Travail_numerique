@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from scipy import ndimage
 
 from src.coordinate_and_position import CoordinateSystem
 from src.fields import ScalarField
@@ -48,6 +50,8 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
+
+
         raise NotImplementedError
 
     def _solve_in_polar_coordinate(
@@ -77,6 +81,35 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(r, θ) = 0 if (r, θ) is not a point belonging to an electrical component of the circuit.
         """
+
+        #création liste contenant coordonnées polaires des composants avec tension non nulle
+        composants_liste = []
+        for angle, ligne in enumerate(constant_voltage):
+            for rayon, val in enumerate(ligne):
+                if val != 0:
+                    composants_liste.append((rayon, angle, val))
+        #initialise matrice de dépendance avec matrice de tension des composants
+        matrice_dependance = constant_voltage
+        #on itère
+        for i in range(self.nb_iterations):
+            #on crée les matrices pour calculer le champ de potentiel électrique en chaque point (r,theta) de l'espace
+            #Les différentes matrices représentent les potentiels électriques en chaque point voisin d'un point donné (r, theta) dans les 4 direction: nord, sud, est et ouest 
+            V_nord = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_nord[0:-2, 1:-1]=matrice_dependance
+            V_sud = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_sud[2:, 1:-1]=matrice_dependance
+            V_ouest = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_ouest[1:-1, 0:-2]=matrice_dependance
+            V_est = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_est[1:-1, 2:]=matrice_dependance
+            #Utilisées pour approximer les dérivées partielles du potentiel électrique en chaque point de l'espace, ce qui permet ensuite de résoudre l'équation de Laplace pour trouver le champ de potentiel électrique.
+            matrice_dependance=((1/delta_r**2+1/delta_theta**2)**(-1) * 0.5 * ((V_sud+V_nord)/delta_r**2+(V_est+V_ouest)/delta_theta**2))[1:-1, 1:-1]
+            for k in composants_liste:
+                matrice_dependance[k[1], k[0]] = k[2]
+
+            return ScalarField(matrice_dependance)
+
+
         raise NotImplementedError
 
     def solve(
