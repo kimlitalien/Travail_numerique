@@ -52,8 +52,8 @@ import numpy as np
 from src.fields import VectorField
 
 # Dimensions du carré de courant
-width = 1000
-height = 1000
+width = 10
+height = 10
 
 # Intensité du courant
 current_intensity = 1.0  # Intensité du courant
@@ -75,4 +75,5 @@ electric_current[width-1, 0:height, :] = np.array([0, -current_intensity, 0])
 #on calcule le champ magnétique
 champ_magnétique = solver._solve_in_cartesian_coordinate(electric_current,1,1)
 
+print(champ_magnétique)
 champ_magnétique.show()

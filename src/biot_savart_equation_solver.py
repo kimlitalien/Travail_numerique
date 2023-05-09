@@ -44,19 +44,19 @@ class BiotSavartEquationSolver:
         x, y, z = electric_current.shape
         #on initialise un champ magnétique total nul de même dimension que le electric_current
         champ_total = np.zeros((x, y, z))
-        #on parcourt tous les points en x avec un pas de delta_x
-        for i in range(0, x, delta_x):
-            #on parcourt tous les points en y avec un pas de delta_y
-            for j in range(0, y, delta_y):
+        #on parcourt tous les points en x
+        for i in range(x):
+            #on parcourt tous les points en y
+            for j in range(y):
                 #on vérifie si au moins une composante du courant n'est pas nul
                 if electric_current[i,j][0] != 0 or electric_current[i,j][1] != 0 or electric_current[i,j][2] != 0:
                     #on initialise un champ magnétique produit par l'element de courant (i,j)
                     champ = np.zeros((x, y, z))
                     #si c'est le cas, calcule la contribution au champ du point (i,j) pour tous les points de l'espace
-                    for k in range(0, x, delta_x):
-                        for l in range(0, y, delta_y):
+                    for k in range(x):
+                        for l in range(y):
                             #on veut juste calculer le champ pour les points de l'espace où il n'y a pas d'élément de courant
-                            if electric_current[k,l][0] == 0 or electric_current[k,l][1] == 0 or electric_current[k,l][2] == 0:
+                            if electric_current[k,l][0] == 0 and electric_current[k,l][1] == 0 and electric_current[k,l][2] == 0:
                                 #on cherche la distance entre l'élement de courant(i,j) et le point où on cherche le champ(k,l)
                                 rx = i-k
                                 ry = j-l
@@ -101,6 +101,25 @@ class BiotSavartEquationSolver:
         r, θ, z = electric_current.shape
         #on initialise un champ magnétique total nul de même dimension que le electric_current
         champ_total = np.zeros(r, θ, z)
+        #on parcourt tous les points en r:
+        for i in range(r):
+            #on parcourt tous les points en θ
+            for j in range(θ):
+                #on vérfie si au moins une des composantes du courant n'est pas nulle
+                if electric_current[i,j][0]!=0 or electric_current[i,j][1]!=0 or electric_current[i,j][2]!=0:
+                    #on initialise un champ magnétique produit par l'élement de courant (i,j)
+                    champ = np.zeros(r,θ,z)
+                    #si le courant est non-nul au point (i,j), on calcule la contribution du point (i,j) sur tous les points de l'espace
+                    for k in range(r):
+                        for l in range(θ):
+                            #on veut juste calculer le champ pour les points de l'espace où il n'y a pas d'élément de courant
+                            if electric_current[k,l][0] == 0 and electric_current[k,l][1] == 0 and electric_current[k,l][2] == 0:
+                                #on cherche la distance R entre l'élément de courant (i,j) et le point où on cherche le champ (k,l)
+                                Rr = i-k
+                                Rθ = j-l
+                                
+                                
+
 
     def solve(
             self,
