@@ -53,8 +53,8 @@ class BiotSavartEquationSolver:
                     #on initialise un champ magnétique produit par l'element de courant (i,j)
                     champ = np.zeros((x, y, 3))
                     #si c'est le cas, calcule la contribution au champ du point (i,j) pour tous les points de l'espace
-                    for k in range(x/delta_x):
-                        for l in range(y/delta_y):
+                    for k in range(x):
+                        for l in range(y):
                             #on veut juste calculer le champ pour les points de l'espace où il n'y a pas d'élément de courant
                             if electric_current[k,l][0] == 0 and electric_current[k,l][1] == 0:
                                 #on cherche la distance entre l'élement de courant(i,j) et le point où on cherche le champ(k,l)

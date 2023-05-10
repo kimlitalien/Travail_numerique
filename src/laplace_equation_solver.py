@@ -142,10 +142,8 @@ class LaplaceEquationSolver:
             for k in composants_liste:
                 matrice_dependance[k[1], k[0]] = k[2]
             # retourne la matrice de potentiel mise à jour sous la forme d'un objet    
-            return ScalarField(matrice_dependance)
+        return ScalarField(matrice_dependance)
 
-
-        raise NotImplementedError
 
     def solve(
             self,
