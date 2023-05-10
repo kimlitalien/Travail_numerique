@@ -57,26 +57,34 @@ class LaplaceEquationSolver:
         for num_rangee, rangee in enumerate(constant_voltage):
             for num_colone, voltage in enumerate(rangee):
                 if voltage != 0:
-                    liste_voltage_pas_zero.append(num_colone, num_rangee, voltage)
+                    liste_voltage_pas_zero.append((num_colone, num_rangee, voltage))
 
-#matrice de voltage
-        array_horizontale_vide = np.zeros((1, num_colone+1))
-        array_verticale_vide = np.zeros((1, num_rangee+1)).T
-
-        for i in range(0, self):
-            D_Nord = np.concatenate((constant_voltage[:, 1:], array_horizontale_vide), axis=0)
-            D_Sud = np.concatenate((array_horizontale_vide, constant_voltage[:-1, :]), axis=0)
-            D_Est = np.concatenate((array_verticale_vide, constant_voltage[:, :-1]), axis=1)
-            D_Ouest = np.concatenate((constant_voltage[:, 1:], array_verticale_vide), axis=1)
-        
-            constant_voltage = (D_Nord + D_Sud + D_Est + D_Ouest)/4
-
+                #initialise matrice de dépendance avec matrice de tension constante des composants
+        matrice_dependance = constant_voltage
+        #on itère
+        for i in range(self.nb_iterations):
+            #on crée des sous-matrices matrices pour calculer le champ de potentiel électrique en chaque point (x,y) de l'espace
+            #Les différentes matrices représentent les potentiels électriques en chaque point voisin d'un point donné (x, y) dans les 4 direction: nord, sud, est et ouest 
+            #Utilisées pour approximer les dérivées partielles du potentiel électrique en chaque point de l'espace, ce qui permet ensuite de résoudre l'équation de Laplace pour trouver le champ de potentiel électrique.
+            V_ouest = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_ouest[0:-2, 1:-1]=matrice_dependance
+            V_est = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_est[2:, 1:-1]=matrice_dependance
+            V_nord = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_nord[1:-1, 0:-2]=matrice_dependance
+            V_sud = np.zeros((constant_voltage.shape[1] + 2, constant_voltage.shape[0] + 2))
+            V_sud[1:-1, 2:]=matrice_dependance
+            
+            # calcule la nouvelle matrice des potentiels, calculée à partir de la matrice de tension constante constant_voltage, ainsi que de des quatre sous-matrices matrices supplémentaires
+            matrice_dependance=((1/delta_x**2+1/delta_y**2)**(-1) * 0.5 * ((V_sud+V_nord)/delta_y**2+(V_est+V_ouest)/delta_x**2))[1:-1, 1:-1]
+            #parcourt la liste composants_liste et met à jour les potentiels de tous les points correspondant à des composants du circuit électrique, en utilisant les valeurs de tension constante
             for value in liste_voltage_pas_zero:
-                constant_voltage[value[1], value[0]=value[2]]
+                matrice_dependance[value[1], value[0]] = value[2]
+        # retourne la matrice de potentiel mise à jour sous la forme d'un objet    
+        return ScalarField(matrice_dependance)
 
-        return ScalarField(constant_voltage)
-        
-        raise NotImplementedError
+
+
 
     def _solve_in_polar_coordinate(
             self,

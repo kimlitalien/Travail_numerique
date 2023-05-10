@@ -43,31 +43,30 @@ class BiotSavartEquationSolver:
         #on détermine les dimensions du electric_current à parcourir
         x, y, z = electric_current.shape
         #on initialise un champ magnétique total nul de même dimension que le electric_current
-        champ_total = np.zeros((x, y, z))
+        champ_total = np.zeros((x, y, 3))
         #on parcourt tous les points en x
         for i in range(x):
             #on parcourt tous les points en y
             for j in range(y):
                 #on vérifie si au moins une composante du courant n'est pas nul
-                if electric_current[i,j][0] != 0 or electric_current[i,j][1] != 0 or electric_current[i,j][2] != 0:
+                if electric_current[i,j][0] != 0 or electric_current[i,j][1] != 0:
                     #on initialise un champ magnétique produit par l'element de courant (i,j)
-                    champ = np.zeros((x, y, z))
+                    champ = np.zeros((x, y, 3))
                     #si c'est le cas, calcule la contribution au champ du point (i,j) pour tous les points de l'espace
-                    for k in range(x):
-                        for l in range(y):
+                    for k in range(x/delta_x):
+                        for l in range(y/delta_y):
                             #on veut juste calculer le champ pour les points de l'espace où il n'y a pas d'élément de courant
-                            if electric_current[k,l][0] == 0 and electric_current[k,l][1] == 0 and electric_current[k,l][2] == 0:
+                            if electric_current[k,l][0] == 0 and electric_current[k,l][1] == 0:
                                 #on cherche la distance entre l'élement de courant(i,j) et le point où on cherche le champ(k,l)
                                 rx = i-k
                                 ry = j-l
                                 norme_r = math.sqrt(rx**2 + ry**2)
-                                vecteur_r = np.array([rx, ry, 0])
+                                vecteur_r = -np.array([rx, ry, 0])
                                 I_x_r = np.cross(electric_current[i,j], vecteur_r)
                                 #on applique la loi de Biot-Savart
-                                champ[k,l] = (mu_0 * I_x_r / 4 * pi * norme_r**3)
+                                champ[k,l] = (mu_0 / (4 * pi)) * (I_x_r / norme_r**3)
                     #on ajoute le champ produit par chaque élément de courant au champ total
                     champ_total = champ_total + champ
-
         return VectorField(champ_total) 
 
     def _solve_in_polar_coordinate(

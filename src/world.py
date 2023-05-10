@@ -145,7 +145,20 @@ class World:
         nb_relaxation_iterations : int
             Number of iterations performed to obtain the potential by the relaxation method (default = 1000)
         """
-        raise NotImplementedError
+        #Pour calculer en coordonnées cartésiennes
+        if self._coordinate_system == CoordinateSystem.CARTESIAN:
+
+            Laplace_Solver = LaplaceEquationSolver(nb_relaxation_iterations)
+            BiotSavart_Solver = BiotSavartEquationSolver()
+
+            #Calcul du potentiel
+            self._potential = Laplace_Solver._solve_in_cartesian_coordinate(self._circuit_voltage, self.delta_q1, self.delta_q2)
+            #Calcul du champ électrique
+            self._electric_field = -self._potential.gradient()
+            #Calcul du champ magnétique
+            self._magnetic_field = BiotSavart_Solver._solve_in_cartesian_coordinate(self._circuit_current, self.delta_q1, self.delta_q2)
+            #Calcul du vecteur de Poynting
+            self._energy_flux = self._electric_field.cross(self._magnetic_field)
 
     def show_circuit(self, nodes_position_in_figure: dict = None):
         """
