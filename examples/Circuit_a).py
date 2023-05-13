@@ -23,22 +23,20 @@ BATTERY_VOLTAGE = 1.0
 HIGH_WIRE_RESISTANCE = 1.0
 LOW_WIRE_RESISTANCE = 0.01
 
-wires = [(Wire((26,26), (64, 26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)),
-         (Wire((64,26), (74,26), horizontal_eqs, cartesian_variables,HIGH_WIRE_RESISTANCE)),
-         (Wire((74,26), (76,26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)),
-         (Wire((26,26), (26,76), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)),
-         (Wire((76,26), (76,56), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)),
-         (Wire((76,56), (76,66), vertical_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE)),
-         (Wire((76,66), (76,76), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)),
-         (Wire((26,76), (36,76), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)),
-         (VoltageSource((36,76), (38,76), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)),
-         (Wire((38,76), (76,76), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-         ]
-
-circuit = Circuit(wires)
+wires = [
+        Wire((26,26), (64, 26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((64,26), (74,26), horizontal_eqs, cartesian_variables,HIGH_WIRE_RESISTANCE),
+        Wire((74,26), (76,26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((26,26), (26,76), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((76,26), (76,56), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((76,56), (76,66), vertical_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE),
+        Wire((76,66), (76,76), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((26,76), (36,76), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((36,76), (38,76), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((38,76), (76,76), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
+        ]
+ground_position = (38, 76)
+circuit = Circuit(wires, ground_position)
 world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
-world.show_circuit(
-    {0: (64, 26), 1: (74, 26), 2: (76, 56), 3: (76, 66), 4: (38, 76), 5: (36, 76)}
-)
 world.compute()
 world.show_all()
