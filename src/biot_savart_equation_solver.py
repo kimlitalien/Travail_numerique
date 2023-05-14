@@ -44,21 +44,29 @@ class BiotSavartEquationSolver:
         x, y, z = electric_current.shape
         #on initialise un champ magnétique total nul de même dimension que le electric_current
         champ_total = np.zeros((x, y, 3))
+        #on itère sur tous les points de l'espace
         for i in range(x):
             for j in range(y):
+                #on vérfie s'il y a un courant au point (i,j)
                 if electric_current[i, j][0] != 0 or electric_current[i, j][1] != 0:
+                    #on initialise un champ produit par le point(i,j)
                     champ = np.zeros((x, y, 3))
-                    rx = i - np.tile(np.arange(x)[:, np.newaxis, np.newaxis], (1, y, 1))
-                    ry = j - np.tile(np.arange(y)[:, np.newaxis, np.newaxis], (1, y, 1))
+                    #on trouve les distances en x et y entre le point (i,j) et tous les points de l'espace
+                    rx, ry = np.meshgrid(np.arange(x) - i, np.arange(y) - j)
                     norme_r = np.sqrt(rx ** 2 + ry ** 2)
-                    vecteur_r = np.stack((-rx, -ry, np.zeros_like(rx)), axis=-1)
+                    #on crée un masque pour éviter les divisions par 0
+                    masque = norme_r != 0
+                    #on calcule le vecteur r
+                    vecteur_r = np.stack((rx, ry, np.zeros_like(ry)), axis=-1)
+                    #on calcule le produit vectoriel
                     I_x_r = np.cross(electric_current[i, j], vecteur_r)
-                    champ = (mu_0 / (4 * pi)) * (I_x_r / norme_r ** 3)
-                    champ_total[i, j] = champ_total[i, j] + champ[i, j]
-
-
+                    #on calcul le champ magnétique produit par l'élément de courant (i,j) sur tous les points de l'espace
+                    champ[masque] = (mu_0 / (4 * np.pi)) * (I_x_r[masque] / norme_r[masque, np.newaxis] ** 3)
+                    #on ajoute le champ produit par le point (i,j) au champ total
+                    champ_total += champ
 
         return VectorField(champ_total)
+
 
 
     def _solve_in_polar_coordinate(

@@ -8,36 +8,36 @@ if __name__ == "__main__":
     HIGH_WIRE_RESISTANCE = 10.0
     LOW_WIRE_RESISTANCE = 0.001
 
-    c_var = Symbol("x"), Symbol("y")
-    x, y = c_var
+    cartesian_variables = Symbol("x"), Symbol("y")
+    x, y = cartesian_variables
 
     x_expression_vertical = 0 * x
     y_expression_vertical = y
-    v_eqs = (x_expression_vertical, y_expression_vertical)
+    vertical_eqs = (x_expression_vertical, y_expression_vertical)
 
     x_expression_horizontal = x
     y_expression_horizontal = 0 * y
-    h_eqs = (x_expression_horizontal, y_expression_horizontal)
+    horizontal_eqs= (x_expression_horizontal, y_expression_horizontal)
 
     wires = [
-        Wire((58, 24), (24, 24), h_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((24, 24), (24, 65), v_eqs, c_var, LOW_WIRE_RESISTANCE),
-        VoltageSource((24, 65), (24, 85), v_eqs, c_var, BATTERY_VOLTAGE),
-        Wire((24, 85), (24, 126), v_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((24, 126), (58, 126), h_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((58, 126), (58, 85), v_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((58, 85), (58, 65), v_eqs, c_var, HIGH_WIRE_RESISTANCE),
-        Wire((58, 65), (58, 24), v_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((58, 24), (126, 24), h_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((126, 24), (126, 65), v_eqs, c_var, LOW_WIRE_RESISTANCE),
-        VoltageSource((126, 65), (126, 85), v_eqs, c_var, BATTERY_VOLTAGE),
-        Wire((126, 85), (126, 126), v_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((126, 126), (58, 126), h_eqs, c_var, LOW_WIRE_RESISTANCE), # la le trou
-        Wire((58, 126), (92, 126), h_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((92, 126), (92, 85), v_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((92, 85), (92, 65), v_eqs, c_var, HIGH_WIRE_RESISTANCE),
-        Wire((92, 65), (92, 24), v_eqs, c_var, LOW_WIRE_RESISTANCE),
-        Wire((92, 24), (58, 24), h_eqs, c_var, LOW_WIRE_RESISTANCE)
+        Wire((58, 24), (24, 24), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((24, 24), (24, 65), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((24, 65), (24, 85), vertical_eqs, cartesian_variables, BATTERY_VOLTAGE),
+        Wire((24, 85), (24, 126), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((24, 126), (58, 126), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((58, 126), (58, 85), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((58, 85), (58, 65), vertical_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE),
+        Wire((58, 65), (58, 24), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((58, 24), (126, 24), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((126, 24), (126, 65), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((126, 65), (126, 85), vertical_eqs, cartesian_variables, BATTERY_VOLTAGE),
+        Wire((126, 85), (126, 126), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((126, 126), (58, 126), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((58, 126), (92, 126), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((92, 126), (92, 85), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((92, 85), (92, 65), vertical_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE),
+        Wire((92, 65), (92, 24), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((92, 24), (58, 24), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
         ]
 
     ground_position = (58, 24)
