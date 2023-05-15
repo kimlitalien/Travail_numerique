@@ -27,34 +27,30 @@ if __name__ == "__main__":
     theta_radial = 0 * theta
     eqs_radial = (r_radial, theta_radial)
 
-    #constantes pour le circuit d)
-    theta1 = np.pi / 24
-    theta2 = np.pi / 3
-
     wires = [
-        Wire((20, theta1), (60, theta1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, theta1), (60, np.pi/7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, np.pi/7), (60, 2*np.pi/9), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((60, 2*np.pi/9), (60, theta2), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, theta2), (20, theta2), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((20, theta2), (20, 2*np.pi/9), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((20, 2*np.pi/9), (20, np.pi/7), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
-        Wire((20, np.pi/7), (20, theta1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 1), (60, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 1), (60, 0.5), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 0.5), (60, 0.7), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((60, 0.7), (60, 1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 1), (20, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 1), (20, 0.7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((20, 0.7), (20, 0.5), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
+        Wire((20, 0.5), (20, 1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
     ]
-    ground = (20, np.pi/7)
+    ground = (20, 0.5)
 
     circuit = Circuit(wires, ground)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
 
     world.show_circuit(
-        {0: (20, theta1),
-        1: (60, theta1), 
-        2: (60, np.pi/7),
-        3: (60, 2*np.pi/9),
-        4: (60, theta2),
-        5: (20, theta2),
-        6: (20, 2*np.pi/9),
-        7: (20, np.pi/7)}
+        {0: (20, 1),
+        1: (60, 1), 
+        2: (60, 0.5),
+        3: (60, 0.7),
+        4: (60, 1),
+        5: (20, 1),
+        6: (20, 0.7),
+        7: (20, 0.5)}
     )
 
     world.compute()
