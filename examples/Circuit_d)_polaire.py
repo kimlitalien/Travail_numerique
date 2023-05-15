@@ -27,27 +27,29 @@ if __name__ == "__main__":
     eqs_radial = (r_radial, theta_radial)
 
     wires = [
-        Wire((20, 1), (60, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 1), (60, 0.8), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 0.8), (60, 0.7), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((60, 0.7), (60, 0.5), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 0.5), (20, 0.5), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((20, 0.5), (20, 0.7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((20, 0.7), (20, 0.8), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
-        Wire((20, 0.8), (20, 1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 0.13), (80, 0.13), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((80, 0.13), (80, 0.45), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((80, 0.45), (80, 0.7), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((80, 0.7), (80, 0.45), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((80, 1), (80, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((80, 1), (20, 0.7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((20, 0.7), (20, 0.45), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
+        Wire((80, 0.45), (20, 0.13), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
     ]
-    ground = (20, 0.5)
+    ground = (20, 0.75)
 
     circuit = Circuit(wires, ground)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
 
     world.show_circuit(
-        {0: (20, 1),
-        1: (60, 1),
-        2: (60, 0.5),
-        3: (20, 0.5),
-        4: (20, 0.7),
-        5: (20, 0.8)}
+        {0: (20, 0.13),
+        1: (80, 0.13),
+        2: (80, 0.45),
+        3: (20, 0.7),
+        4: (20, 1),
+        5: (20, 1),
+        6: (20, 0.7),
+        7: (20, 0.45)}
     )
 
     world.compute()
