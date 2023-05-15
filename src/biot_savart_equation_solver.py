@@ -45,8 +45,8 @@ class BiotSavartEquationSolver:
         #on initialise un champ magnétique total nul de même dimension que le electric_current
         champ_total = np.zeros((x, y, 3))
         #on itère sur tous les points de l'espace
-        for i in range(x):
-            for j in range(y):
+        for j in range(y):
+            for i in range(x):
                 #on vérfie s'il y a un courant au point (i,j)
                 if electric_current[i, j][0] != 0 or electric_current[i, j][1] != 0:
                     #on initialise un champ produit par le point(i,j)
@@ -57,14 +57,13 @@ class BiotSavartEquationSolver:
                     #on crée un masque pour éviter les divisions par 0
                     masque = norme_r != 0
                     #on calcule le vecteur r
-                    vecteur_r = np.stack((rx, ry, np.zeros_like(rx)), axis=-1)
+                    vecteur_r = np.stack((-rx, -ry, np.zeros_like(rx)), axis=-1)
                     #on calcule le produit vectoriel
-                    I_x_r = np.cross(electric_current[i, j], vecteur_r)
+                    I_x_r = np.cross(vecteur_r, electric_current[i, j]) 
                     #on calcul le champ magnétique produit par l'élément de courant (i,j) sur tous les points de l'espace
                     champ[masque] = (mu_0 / (4 * np.pi)) * (I_x_r[masque] / norme_r[masque, np.newaxis] ** 3)
                     #on ajoute le champ produit par le point (i,j) au champ total
-                    champ_total += champ[:, :, ::-1]
-
+                    champ_total += champ
         return VectorField(champ_total)
 
 

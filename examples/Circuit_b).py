@@ -46,4 +46,5 @@ if __name__ == "__main__":
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
 
     world.compute()
-    world.show_all()
+    world.show_magnetic_field()
+    #world.show_all()
