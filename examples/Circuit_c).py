@@ -1,11 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as mpl
-
 
 import env_examples  # Modifies path, DO NOT REMOVE
 from sympy import Symbol
 from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
-
+import numpy as np
+import matplotlib.pyplot as mpl
 if __name__ == "__main__":
     WORLD_SHAPE = (150, 150)
     BATTERY_VOLTAGE = 10.0
@@ -49,7 +47,6 @@ if __name__ == "__main__":
         début_y = paramétrisation_cercle(rayon, 0 * np.pi, 5/12 * np.pi, points_droite_haut)[1][i]
         fin_y = paramétrisation_cercle(rayon, 0 * np.pi, 5/12 * np.pi, points_droite_haut)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        print((début_x, début_y), (fin_x, fin_y))
         liste_x.append(début_x)
         liste_x.append(fin_x)
         liste_y.append(début_y)
@@ -66,7 +63,6 @@ if __name__ == "__main__":
         liste_x.append(fin_x)
         liste_y.append(début_y)
         liste_y.append(fin_y)
-        print((début_x, début_y), (fin_x, fin_y))
 
     #section de gauche
     for i in range(points_gauche-1):
@@ -79,7 +75,6 @@ if __name__ == "__main__":
         liste_x.append(fin_x)
         liste_y.append(début_y)
         liste_y.append(fin_y)
-        print((début_x, début_y), (fin_x, fin_y))
 
     #section avec la source
     for i in range(points_source-1):
@@ -92,7 +87,6 @@ if __name__ == "__main__":
         liste_x.append(fin_x)
         liste_y.append(début_y)
         liste_y.append(fin_y)
-        print((début_x, début_y), (fin_x, fin_y))
 
   #section de droite(bas)
     for i in range(points_droite_bas-1):
@@ -101,7 +95,6 @@ if __name__ == "__main__":
         début_y = paramétrisation_cercle(rayon, 37/24 * np.pi, 2 * np.pi, points_droite_bas)[1][i]
         fin_y = paramétrisation_cercle(rayon, 37/24 * np.pi, 2 * np.pi, points_droite_bas)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        print((début_x, début_y), (fin_x, fin_y))
         liste_x.append(début_x)
         liste_x.append(fin_x)
         liste_y.append(début_y)

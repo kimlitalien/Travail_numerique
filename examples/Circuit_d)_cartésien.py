@@ -44,8 +44,6 @@ if __name__ == "__main__":
     décalage = (0,0)
 
     wires = []
-    liste_x = []
-    liste_y =[]
 
     #on calcule le nombre de points proportionnels à l'angle
     points_haut_droite = int(points * 1/8 / 2)
@@ -62,11 +60,7 @@ if __name__ == "__main__":
         début_y = paramétrisation_cercle(rayon_1, 1/12 * np.pi, 5/24 * np.pi, points_haut_droite)[1][i]
         fin_y = paramétrisation_cercle(rayon_1, 1/12 * np.pi, 5/24 * np.pi, points_haut_droite)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        print((début_x, début_y), (fin_x, fin_y))
-        liste_x.append(début_x)
-        liste_x.append(fin_x)
-        liste_y.append(début_y)
-        liste_y.append(fin_y)
+
 
     #section avec la résistance
     for i in range(points_resistance-1):
@@ -75,11 +69,6 @@ if __name__ == "__main__":
         début_y = paramétrisation_cercle(rayon_1, 5/24 * np.pi, 7/24 * np.pi, points_resistance)[1][i]
         fin_y = paramétrisation_cercle(rayon_1, 5/24 * np.pi, 7/24 * np.pi, points_resistance)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, HIGH_WIRE_RESISTANCE))
-        liste_x.append(début_x)
-        liste_x.append(fin_x)
-        liste_y.append(début_y)
-        liste_y.append(fin_y)
-        print((début_x, début_y), (fin_x, fin_y))
 
     #section du haut (gauche)
     for i in range(points_haut_gauche-1):
@@ -88,11 +77,6 @@ if __name__ == "__main__":
         début_y = paramétrisation_cercle(rayon_1, 7/24 * np.pi, 5/12 * np.pi, points_haut_gauche)[1][i]
         fin_y = paramétrisation_cercle(rayon_1, 7/24 * np.pi, 5/12 * np.pi, points_haut_gauche)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        print((début_x, début_y), (fin_x, fin_y))
-        liste_x.append(début_x)
-        liste_x.append(fin_x)
-        liste_y.append(début_y)
-        liste_y.append(fin_y)
 
     #section de gauche pour fermer le cicruit
     p1 = (paramétrisation_cercle(rayon_1, 5/12 * np.pi, 5/12 * np.pi, 1)[0], (paramétrisation_cercle(rayon_1, 5/12 * np.pi, 5/12 * np.pi, 1))[1])
@@ -103,11 +87,6 @@ if __name__ == "__main__":
         début_y = paramétrisation_droite(p1, p2, points)[1][i]
         fin_y = paramétrisation_droite(p1, p2, points)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        print((début_x, début_y), (fin_x, fin_y))
-        liste_x.append(début_x)
-        liste_x.append(fin_x)
-        liste_y.append(début_y)
-        liste_y.append(fin_y)
 
     #section du bas (gauche)
     for i in range(points_bas_gauche-1):
@@ -116,11 +95,7 @@ if __name__ == "__main__":
         début_y = paramétrisation_cercle(rayon_2, 5/12 * np.pi, 13/48 * np.pi, points_bas_gauche)[1][i]
         fin_y = paramétrisation_cercle(rayon_2, 5/12 * np.pi, 13/48 * np.pi, points_bas_gauche)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        print((début_x, début_y), (fin_x, fin_y))
-        liste_x.append(début_x)
-        liste_x.append(fin_x)
-        liste_y.append(début_y)
-        liste_y.append(fin_y)
+
 
     #section avec la source
     for i in range(points_source-1):
@@ -130,11 +105,6 @@ if __name__ == "__main__":
         fin_y = paramétrisation_cercle(rayon_2, 13/48 * np.pi, 11/48 * np.pi, points_source)[1][i+1]
         wires.append(VoltageSource((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, BATTERY_VOLTAGE))
         ground_position = (fin_x, fin_y)
-        liste_x.append(début_x)
-        liste_x.append(fin_x)
-        liste_y.append(début_y)
-        liste_y.append(fin_y)
-        print((début_x, début_y), (fin_x, fin_y))
 
     #section du bas (droite)
     for i in range(points_bas_droite-1):
@@ -143,11 +113,7 @@ if __name__ == "__main__":
         début_y = paramétrisation_cercle(rayon_2, 11/48 * np.pi, 1/12 * np.pi, points_bas_droite)[1][i]
         fin_y = paramétrisation_cercle(rayon_2, 11/48 * np.pi, 1/12 * np.pi, points_bas_droite)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        print((début_x, début_y), (fin_x, fin_y))
-        liste_x.append(début_x)
-        liste_x.append(fin_x)
-        liste_y.append(début_y)
-        liste_y.append(fin_y)
+
 
     #section de droite pour fermer le circuit
     p3 = (paramétrisation_cercle(rayon_2, 1/12 * np.pi, 1/12 * np.pi, 1)[0], (paramétrisation_cercle(rayon_2, 1/12 * np.pi, 1/12 * np.pi, 1))[1])
@@ -158,20 +124,6 @@ if __name__ == "__main__":
         début_y = paramétrisation_droite(p3, p4, points)[1][i]
         fin_y = paramétrisation_droite(p3, p4, points)[1][i+1]
         wires.append(Wire((début_x, début_y), (fin_x, fin_y), eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-        print((début_x, début_y), (fin_x, fin_y))
-        liste_x.append(début_x)
-        liste_x.append(fin_x)
-        liste_y.append(début_y)
-        liste_y.append(fin_y)
-
-
-
-    mpl.scatter(liste_x, liste_y)
-    mpl.scatter(p1[0], p1[1])
-    mpl.scatter(p2[0], p2[1])
-    mpl.scatter(p3[0], p3[1])
-    mpl.scatter(p4[0], p4[1])
-    mpl.show()
 
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)

@@ -170,7 +170,7 @@ class World:
         """
         Shows circuit's voltage field.
         """
-        self._circuit_voltage.show(title="Initial voltage")
+        self._circuit_voltage.show(title="Initial voltage [V]", x_label = 'Position x [m]', y_label = 'Position y [m]')
 
     def show_circuit_current(self):
         """
@@ -183,7 +183,7 @@ class World:
         """
         Shows the electric potential.
         """
-        self._potential.show(title="Potential")
+        self._potential.show(title="Potential [V]", x_label = 'Position x [m]', y_label = 'Position y [m]')
 
     def show_electric_field(self, hide_components: bool = True):
         """
@@ -202,19 +202,19 @@ class World:
         else:
             electric_field = self._electric_field
 
-        electric_field.show(title="Electric field")
+        electric_field.show(title="Electric field [V/m]", x_label = 'Position x [m]', y_label = 'Position y [m]')
 
     def show_magnetic_field(self):
         """
         Shows the z-component of the magnetic field.
         """
-        self._magnetic_field.z.show(title="Magnetic field (z component)")
+        self._magnetic_field.z.show(title="Magnetic field (z component) [T]", x_label = 'Position x [m]', y_label = 'Position y [m]')
 
     def show_energy_flux(self):
         """
         Shows the energy flux.
         """
-        self._energy_flux.show(title="Energy flux")
+        self._energy_flux.show(title="Energy flux [W/m^2]", x_label = 'Position x [m]', y_label = 'Position y [m]')
 
     def show_all(self):
         """
