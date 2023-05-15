@@ -5,7 +5,7 @@ from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
 
 
 
-if __name__ == "__main__":
+if __name__ == "__main_":
     WORLD_SHAPE = (101, 101)
     BATTERY_VOLTAGE = 1.0
     HIGH_WIRE_RESISTANCE = 1.0
@@ -26,29 +26,29 @@ if __name__ == "__main__":
 
 
     wires = [
-        Wire((60, 1), (40, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 1), (60, 0.8), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 0.8), (60, 0.7), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((60, 0.7), (60, 0.5), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((40, 0.5), (60, 0.5), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((40, 0.5), (40, 0.7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((40, 0.7), (40, 0.8), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
-        Wire((40, 0.8), (40, 1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 1/12 * np.pi), (80, 1/12 * np.pi), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((80, 1/12 * np.pi), (80, 5/24 * np.pi), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((80, 5/24 * np.pi), (60, 7/24 * np.pi), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((80, 7/24 * np.pi), (80, 5/12 * np.pi), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((80, 5/12 * np.pi), (20, 5/12 * np.pi), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 5/12 * np.pi), (20, 13/48 * np.pi), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((20, 13/48 * np.pi), (20, 11/48 * np.pi), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
+        Wire((20, 11/48 * np.pi), (20, 1/12 * np.pi), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
     ]
-    ground = (40, 1)
+    ground = (20, 11/48 * np.pi)
 
     circuit = Circuit(wires, ground)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
 
     world.show_circuit(
-        {0: (40, 1),
-        1: (60, 1),
-        2: (40, 0.5),
-        3: (60, 0.5),
-        4: (40, 0.7),
-        5: (60, 0.7),
-        6: (40, 0.8),
-        7: (60, 0.8)}
+        {0: (20, 1/12 * np.pi),
+        1: (80, 1/12 * np.pi),
+        2: (80, 5/24 * np.pi),
+        3: (80, 7/24 * np.pi),
+        4: (80, 5/12 * np.pi),
+        5: (20, 5/12 * np.pi),
+        6: (20, 13/48 * np.pi),
+        7: (20, 11/48 * np.pi)}
     )
 
     world.compute()
