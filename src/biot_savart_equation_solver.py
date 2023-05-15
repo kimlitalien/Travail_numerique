@@ -57,13 +57,13 @@ class BiotSavartEquationSolver:
                     #on crée un masque pour éviter les divisions par 0
                     masque = norme_r != 0
                     #on calcule le vecteur r
-                    vecteur_r = np.stack((rx, ry, np.zeros_like(ry)), axis=-1)
+                    vecteur_r = np.stack((rx, ry, np.zeros_like(rx)), axis=-1)
                     #on calcule le produit vectoriel
                     I_x_r = np.cross(electric_current[i, j], vecteur_r)
                     #on calcul le champ magnétique produit par l'élément de courant (i,j) sur tous les points de l'espace
                     champ[masque] = (mu_0 / (4 * np.pi)) * (I_x_r[masque] / norme_r[masque, np.newaxis] ** 3)
                     #on ajoute le champ produit par le point (i,j) au champ total
-                    champ_total += champ
+                    champ_total += champ[:, :, ::-1]
 
         return VectorField(champ_total)
 
