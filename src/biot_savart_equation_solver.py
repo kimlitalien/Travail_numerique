@@ -111,11 +111,18 @@ class BiotSavartEquationSolver:
                     #si le courant est non-nul au point (i,j), on calcule la contribution du point (i,j) sur tous les points de l'espace
                     for k in range(r):
                         for l in range(θ):
-                            #on veut juste calculer le champ pour les points de l'espace où il n'y a pas d'élément de courant
-                            if electric_current[k,l][0] == 0 and electric_current[k,l][1] == 0 and electric_current[k,l][2] == 0:
-                                #on cherche la distance R entre l'élément de courant (i,j) et le point où on cherche le champ (k,l)
-                                Rr = i-k
-                                Rθ = j-l
+                            #on cherche la distance R entre l'élément de courant (i,j) et le point où on cherche le champ (k,l)
+                            R_r = i-k
+                            R_θ = j-l
+                            I_x_R = ([electric_current[i,j][0] * R_r * np.sin(R_θ - electric_current[i,j][1]), R_θ - electric_current[i,j][1], 0])
+                            #on applique la loi de Biot-Savart
+                            champ[k,l] = (mu_0 / (4 * pi)) * (I_x_R / R_r**3)
+                    #on ajoute le champ produit par chaque élément de courant au champ total
+                    champ_total = champ_total + champ
+        return VectorField(champ_total) 
+
+
+
                                 
                                 
 

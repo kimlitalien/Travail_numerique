@@ -173,8 +173,6 @@ if __name__ == "__main__":
     mpl.scatter(p4[0], p4[1])
     mpl.show()
 
-
-
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
     
