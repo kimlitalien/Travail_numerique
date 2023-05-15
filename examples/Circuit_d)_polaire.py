@@ -1,4 +1,3 @@
-import numpy as np 
 import env_examples
 from sympy import Symbol
 
@@ -29,13 +28,13 @@ if __name__ == "__main__":
 
     wires = [
         Wire((20, 1), (60, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 1), (60, 0.5), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 0.5), (60, 0.7), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((60, 0.7), (60, 1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((60, 1), (20, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((20, 1), (20, 0.7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((20, 0.7), (20, 0.5), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
-        Wire((20, 0.5), (20, 1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 1), (60, 0.8), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 0.8), (60, 0.7), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((60, 0.7), (60, 0.5), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 0.5), (20, 0.5), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 0.5), (20, 0.7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((20, 0.7), (20, 0.8), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
+        Wire((20, 0.8), (20, 1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
     ]
     ground = (20, 0.5)
 
@@ -44,13 +43,11 @@ if __name__ == "__main__":
 
     world.show_circuit(
         {0: (20, 1),
-        1: (60, 1), 
+        1: (60, 1),
         2: (60, 0.5),
-        3: (60, 0.7),
-        4: (60, 1),
-        5: (20, 1),
-        6: (20, 0.7),
-        7: (20, 0.5)}
+        3: (20, 0.5),
+        4: (20, 0.7),
+        5: (20, 0.8)}
     )
 
     world.compute()
