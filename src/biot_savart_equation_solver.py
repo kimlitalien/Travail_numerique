@@ -96,26 +96,30 @@ class BiotSavartEquationSolver:
             B_r = B_θ = 0 is always True in our 2D world.
         """
         #on détermine les dimensions du electric_current à parcourir
-        r, θ, z = electric_current.shape
+        x, y, z = electric_current.shape
         #on initialise un champ magnétique total nul de même dimension que le electric_current
-        champ_total = np.zeros(r, θ, z)
-        #on parcourt tous les points en r:
-        for i in range(r):
-            #on parcourt tous les points en θ
-            for j in range(θ):
-                #on vérfie si au moins une des composantes du courant n'est pas nulle
-                if electric_current[i,j][0]!=0 or electric_current[i,j][1]!=0 or electric_current[i,j][2]!=0:
-                    #on initialise un champ magnétique produit par l'élement de courant (i,j)
-                    champ = np.zeros(r,θ,z)
-                    #si le courant est non-nul au point (i,j), on calcule la contribution du point (i,j) sur tous les points de l'espace
-                    for k in range(r):
-                        for l in range(θ):
-                            #on cherche la distance R entre l'élément de courant (i,j) et le point où on cherche le champ (k,l)
-                            R_r = i-k
-                            R_θ = j-l
-                            I_x_R = ([electric_current[i,j][0] * R_r * np.sin(R_θ - electric_current[i,j][1]), R_θ - electric_current[i,j][1], 0])
-                            #on applique la loi de Biot-Savart
-                            champ[k,l] = (mu_0 / (4 * pi)) * (I_x_R / R_r**3)
+        champ_total = np.zeros((x, y, 3))
+        #on parcourt tous les points en x
+        for i in range(x):
+            #on parcourt tous les points en y
+            for j in range(y):
+                #on vérifie si au moins une composante du courant n'est pas nul
+                if electric_current[i,j][0] != 0 or electric_current[i,j][1] != 0:
+                    #on initialise un champ magnétique produit par l'element de courant (i,j)
+                    champ = np.zeros((x, y, 3))
+                    #si c'est le cas, calcule la contribution au champ du point (i,j) pour tous les points de l'espace
+                    for k in range(x):
+                        for l in range(y):
+                            #on veut juste calculer le champ pour les points de l'espace où il n'y a pas d'élément de courant
+                            if electric_current[k,l][0] == 0 and electric_current[k,l][1] == 0:
+                                #on cherche la distance entre l'élement de courant(i,j) et le point où on cherche le champ(k,l)
+                                rx = i-k
+                                ry = j-l
+                                norme_r = math.sqrt(rx**2 + ry**2)
+                                vecteur_r = -np.array([rx, ry, 0])
+                                I_x_r = np.cross(electric_current[i,j], vecteur_r)
+                                #on applique la loi de Biot-Savart
+                                champ[k,l] = (mu_0 / (4 * pi)) * (I_x_r / norme_r**3)
                     #on ajoute le champ produit par chaque élément de courant au champ total
                     champ_total = champ_total + champ
         return VectorField(champ_total) 

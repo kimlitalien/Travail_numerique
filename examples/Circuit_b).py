@@ -47,4 +47,4 @@ if __name__ == "__main__":
 
     world.compute()
     world.show_magnetic_field()
-    #world.show_all()
+    world.show_all()

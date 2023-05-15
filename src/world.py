@@ -224,7 +224,7 @@ class World:
         """
         Shows the z-component of the magnetic field.
         """
-        self._magnetic_field.z.show(title="Magnetic field (z component) [T]", x_label = 'Position x [m]', y_label = 'Position y [m]')
+        self._magnetic_field.z.show(title="Magnetic field (z component) [T]", x_label = 'Position y [m]', y_label = 'Position x [m]')
 
     def show_energy_flux(self):
         """
