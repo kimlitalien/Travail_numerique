@@ -1,10 +1,8 @@
 import env_examples
+import numpy as np
 from sympy import Symbol
-
-
 from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
-from src.laplace_equation_solver import LaplaceEquationSolver
-from src.biot_savart_equation_solver import BiotSavartEquationSolver
+
 
 
 if __name__ == "__main__":
@@ -26,30 +24,31 @@ if __name__ == "__main__":
     theta_radial = 0 * theta
     eqs_radial = (r_radial, theta_radial)
 
+
     wires = [
-        Wire((20, 0.13), (80, 0.13), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((80, 0.13), (80, 0.45), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((80, 0.45), (80, 0.7), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((80, 0.7), (80, 0.45), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((80, 1), (80, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((80, 1), (20, 0.7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((20, 0.7), (20, 0.45), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
-        Wire((80, 0.45), (20, 0.13), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 1), (40, 1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 1), (60, 0.8), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((60, 0.8), (60, 0.7), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((60, 0.7), (60, 0.5), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((40, 0.5), (60, 0.5), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((40, 0.5), (40, 0.7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((40, 0.7), (40, 0.8), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
+        Wire((40, 0.8), (40, 1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
     ]
-    ground = (20, 0.75)
+    ground = (40, 1)
 
     circuit = Circuit(wires, ground)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
 
     world.show_circuit(
-        {0: (20, 0.13),
-        1: (80, 0.13),
-        2: (80, 0.45),
-        3: (20, 0.7),
-        4: (20, 1),
-        5: (20, 1),
-        6: (20, 0.7),
-        7: (20, 0.45)}
+        {0: (40, 1),
+        1: (60, 1),
+        2: (40, 0.5),
+        3: (60, 0.5),
+        4: (40, 0.7),
+        5: (60, 0.7),
+        6: (40, 0.8),
+        7: (60, 0.8)}
     )
 
     world.compute()
