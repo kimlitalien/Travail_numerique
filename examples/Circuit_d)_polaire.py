@@ -17,34 +17,29 @@ if __name__ == "__main__":
     polar_variables = Symbol("r"), Symbol("theta")
     r, theta = polar_variables
 
-    #Vertical
-    r_vertical = 0 * r
-    theta_vertical = theta
-    eq_vertical = (r_vertical, theta_vertical)
+    #tangentiel
+    r_tangentiel = 0 * r
+    theta_tangentiel = theta
+    eqs_tangentiel = (r_tangentiel, theta_tangentiel)
 
-    #horizontal
-    r_horizontal = r
-    theta_horizontal = 0 * theta
-    eq_horizontal = (r_horizontal, theta_horizontal)
-
-    #pour l'angle (en diagonal)
-    r_diago = r
-    theta_diago = theta
-    eq_diago = (r_diago, theta_diago)
+    #radiale
+    r_radial = r
+    theta_radial = 0 * theta
+    eqs_radial = (r_radial, theta_radial)
 
     #constantes pour le circuit d)
     theta1 = np.pi / 24
     theta2 = np.pi / 3
 
     wires = [
-        Wire((20, theta1), (80, theta1), eq_horizontal, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((80, theta1), (80, np.pi/7), eq_vertical, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((80, np.pi/7), (80, 2*np.pi/9), eq_vertical, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((80, 2*np.pi/9), (80, theta2), eq_vertical, polar_variables, HIGH_WIRE_RESISTANCE),
-        Wire((80, theta2), (20, theta2), eq_horizontal, polar_variables, LOW_WIRE_RESISTANCE),
-        Wire((20, theta2), (20, 2*np.pi/9), eq_vertical, polar_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((20, 2*np.pi/9), (20, np.pi/7), eq_vertical, polar_variables, BATTERY_VOLTAGE),
-        Wire((20, np.pi/7), (20, theta1), eq_vertical, polar_variables, LOW_WIRE_RESISTANCE)
+        Wire((20, theta1), (80, theta1), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((80, theta1), (80, np.pi/7), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((80, np.pi/7), (80, 2*np.pi/9), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((80, 2*np.pi/9), (80, theta2), eqs_tangentiel, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((80, theta2), (20, theta2), eqs_radial, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, theta2), (20, 2*np.pi/9), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((20, 2*np.pi/9), (20, np.pi/7), eqs_tangentiel, polar_variables, BATTERY_VOLTAGE),
+        Wire((20, np.pi/7), (20, theta1), eqs_tangentiel, polar_variables, LOW_WIRE_RESISTANCE)
     ]
     ground = (20, np.pi/7)
 
@@ -64,4 +59,3 @@ if __name__ == "__main__":
 
     world.compute()
     world.show_all()
-
